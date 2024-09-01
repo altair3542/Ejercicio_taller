@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Publicaciones</title>
+</head>
+<body>
+    <h1>Publicaciones</h1>
+
+    <form method="GET">
+      <input type="text" name="q" placeholder="Buscar..." value="{{ query }}">
+      <input type="text" name="categoria" placeholder="Categoria..." value="{{ categoria }}">
+      <input type="date" name="fecha_publicacion"value="{{ fecha_publicacion }}">
+      <button type="submit">Filtrar</button>
+      <a href="{% url 'lista_publicaciones' %}">Limpiar filtros</a>
+    </form>
+
+    <ul>
+        {% for publicacion in page_obj %}
+            <li>
+                <a href="{% url 'detalle_publicacion' publicacion.pk %}">
+                    {{ publicacion.titulo }}
+                </a> - {{ publicacion.fecha_publicacion }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; Primera</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Inicio</a>
+            {% endif %}
+
+            <span class="current">
+                Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Ultima &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</body>
+</html>
